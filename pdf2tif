@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Author: Juan Miguel Cejuela (@juanmirocks)
+
+# Arguments:
+# - 1st parameter: pdf file
+# - (optional) 2nd parameter: dpi resolution -- it defaults to 300dpi
+
+inputPDFFile=$1
+dpi=${2:-300}
+filename=${inputPDFFile%.*}
+outputTIFFile="$filename.${dpi}dpi.tif"
+
+# You need to have ghoscript installed (gs)
+gs -q -dNOPAUSE -r$dpix$dpi -sDEVICE=tiff24nc -sOutputFile=$outputTIFFile $inputPDFFile -c quit
