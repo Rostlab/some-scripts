@@ -12,4 +12,4 @@ Only 3 rules for contributing your scripts:
 4. Add your scripts via a pull request. (Don't directly commit them to the master branch).
 
 
-For any help or doubt about using the repository, please contact [@juanmirocks](https://github.com/juanmirocks) or @sacdallago
+For any help or doubt about using the repository, please contact [@juanmirocks](https://github.com/juanmirocks) or  [@sacdallago](https://github.com/sacdallago)
