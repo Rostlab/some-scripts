@@ -4,7 +4,7 @@ Use this git repository to **share your scripts**. They could be useful to other
 
 The scripts don't have to be super advanced; simple & quick hacks are much welcome.
 
-Only 3 rules for contributing your scripts:
+Only 4 rules for contributing your scripts:
 
 1. Give your script files a meaningful name
 2. Put some documentation/help in the header of the files so that others can know what they are for.
