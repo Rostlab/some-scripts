@@ -11,7 +11,7 @@ Only 3 rules for contributing your scripts:
 3. Put your author information in the header of the file
 
 
-For any help or doubt about using the repository, please contact @juanmirocks
+For any help or doubt about using the repository, please contact [@juanmirocks](https://github.com/juanmirocks)
 
 --
 [rostlab](http://rostlab.org/)
