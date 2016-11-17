@@ -6,17 +6,12 @@ assert sys.version_info.major == 3, "the script requires Python 3"
 
 __author__ = "Juan Miguel Cejuela (@juanmirocks)"
 
-__help__ = """  Filter given GO ontology by the given GO hierarchy.
+__help__ = """  Simple parse a GO ontology .obo file.
 
-                The script takes 2 arguments:
-                    1. a file path with the downloaded GO ontology file (.obo; basic or normal)
-                        example: http://purl.obolibrary.org/obo/go/go-basic.obo
-                    2. the GO hierarchy to extract
+                This python file can be used 1) as a script to filter and extract only a desired GO hierarchy, and
+                2) as a library to parse the parent-children relasionships of the ontology (`is_a` and `part_of`).
 
-                The script then outputs only those GO terms that belong to the desired GO hierarchy,
-                thus potentially reducing the final file size significantly.
-
-                Note: the output is printed to standard output. Redirect this to a file if needed.
+                Note: as a script, the GO Terms are printed to standard output. Redirect to a file if needed.
            """
 
 
@@ -25,7 +20,7 @@ def parse_arguments(argv=[]):
 
     parser = argparse.ArgumentParser(description=__help__)
 
-    parser.add_argument('go_file', help='GO ontology file in .obo format')
+    parser.add_argument('go_file', help='GO ontology file in .obo format, e.g., http://purl.obolibrary.org/obo/go/go-basic.obo')
     parser.add_argument('--hierarchy', required=False, default='', choices=['biological_process', 'molecular_function', 'cellular_component'])
 
     args = parser.parse_args(argv)
@@ -35,8 +30,10 @@ def parse_arguments(argv=[]):
     return args
 
 
-def simple_parse(args, print_out=False, create_dictionary=True):
+def simple_parse(go_file='', args=None, print_out=False, create_dictionary=True):
     import re
+
+    args = args if args else parse_arguments([go_file])
 
     print_out = (lambda line: print(line, end='')) if print_out else (lambda _: None)
 
@@ -87,4 +84,4 @@ def simple_parse(args, print_out=False, create_dictionary=True):
 if __name__ == "__main__":
     import sys
     args = parse_arguments(sys.argv[1:])
-    ret = simple_parse(args, print_out=True, create_dictionary=True)
+    ret = simple_parse(args=args, print_out=True, create_dictionary=True)
