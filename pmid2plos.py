@@ -1,6 +1,11 @@
-# Author: Juan Miguel Cejuela (@juanmirocks)
+#!/usr/bin/env python3
+import sys
 
-# Requires: Python 3
+assert sys.version_info[0] == 3, "the script requires Python 3"
+
+
+__author__ = "Juan Miguel Cejuela (@juanmirocks)"
+
 
 help = """
 Download PLOS (http://www.plos.org/) xml articles given a list of pmids (PubMed ids).
