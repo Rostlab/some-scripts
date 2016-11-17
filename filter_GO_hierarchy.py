@@ -26,7 +26,7 @@ def parse_arguments(argv=[]):
     parser = argparse.ArgumentParser(description=__help__)
 
     parser.add_argument('go_file', help='GO ontology file in .obo format')
-    parser.add_argument('hierarchy', choices=['biological_process', 'molecular_function', 'cellular_component'])
+    parser.add_argument('--hierarchy', required=False, default='', choices=['biological_process', 'molecular_function', 'cellular_component'])
 
     args = parser.parse_args(argv)
 
@@ -35,41 +35,56 @@ def parse_arguments(argv=[]):
     return args
 
 
-def run(args):
+def simple_parse(args, print_out=False, create_dictionary=True):
+    import re
+
+    print_out = (lambda line: print(line, end='')) if print_out else (lambda _: None)
+
+    dictionary = {} if create_dictionary else None
 
     state = 'no_term'
+    go_id = None
+    regex_go_id = re.compile('GO:[0-9]+')
 
     with open(args.go_file) as f:
         for line in f:
             if line.startswith('[Term]'):
                 term_token = line
-                go_id = next(f)
-                name = next(f)
-                namespace = next(f)
+                go_id_line = next(f)
+                go_id = regex_go_id.search(go_id_line).group()
+                name_line = next(f)
+                namespace_line = next(f)
 
-                if namespace.startswith(args.namespace):
+                if namespace_line.startswith(args.namespace):
                     state = 'print'
-                    print(term_token, end='')
-                    print(go_id, end='')
-                    print(name, end='')
-                    print(namespace, end='')
+                    print_out(term_token)
+                    print_out(go_id_line)
+                    print_out(name_line)
+                    print_out(namespace_line)
                 else:
                     state = 'no_print'
 
             elif line == f.newlines:
                 if state == 'print':
-                    print(line, end='')
+                    print_out(line)
 
                 state = 'no_term'
 
             elif state == 'print':
-                print(line, end='')
+                print_out(line)
+
+                if create_dictionary and (line.startswith('is_a: ') or line.startswith('relationship: part_of')):
+                    parent = regex_go_id.search(line).group()
+                    parents = dictionary.get(go_id, [])
+                    dictionary[go_id] = [*parents, parent]
 
             else:
                 continue
+
+    return dictionary
 
 
 if __name__ == "__main__":
     import sys
     args = parse_arguments(sys.argv[1:])
-    run(args)
+    ret = simple_parse(args, print_out=True, create_dictionary=True)
