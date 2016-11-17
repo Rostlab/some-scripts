@@ -12,6 +12,8 @@ __help__ = """  Simple parse a GO ontology .obo file.
                 2) as a library to parse the parent-children relasionships of the ontology (`is_a` and `part_of`).
 
                 Note: as a script, the GO Terms are printed to standard output. Redirect to a file if needed.
+
+                Note: obsolete terms (`is_obsolete`) are written and parsed for backwards-compatibility
            """
 
 
@@ -63,6 +65,8 @@ def simple_parse(go_file='', args=None, print_out=False, create_dictionary=True)
 
             elif line == f.newlines:
                 if state == 'print':
+                    if create_dictionary and go_id not in dictionary:
+                            dictionary[go_id] = []
                     print_out(line)
 
                 state = 'no_term'
@@ -73,7 +77,8 @@ def simple_parse(go_file='', args=None, print_out=False, create_dictionary=True)
                 if create_dictionary and (line.startswith('is_a: ') or line.startswith('relationship: part_of')):
                     parent = regex_go_id.search(line).group()
                     parents = dictionary.get(go_id, [])
-                    dictionary[go_id] = [*parents, parent]
+                    parents = [*parents, parent]
+                    dictionary[go_id] = parents
 
             else:
                 continue
@@ -84,4 +89,4 @@ def simple_parse(go_file='', args=None, print_out=False, create_dictionary=True)
 if __name__ == "__main__":
     import sys
     args = parse_arguments(sys.argv[1:])
-    ret = simple_parse(args=args, print_out=True, create_dictionary=True)
+    simple_parse(args=args, print_out=True, create_dictionary=False)
