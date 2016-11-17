@@ -1,6 +1,11 @@
-# Author: Juan Miguel Cejuela (@juanmirocks)
+#!/usr/bin/env python2
+import sys
 
-# Requires: Python 2
+assert sys.version_info[0] == 2, "the script requires Python 2"
+
+
+__author__ = "Juan Miguel Cejuela (@juanmirocks)"
+
 
 help = """
 Download organism records from GOLD (Genomes Online Database,
