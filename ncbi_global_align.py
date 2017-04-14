@@ -8,8 +8,10 @@ assert sys.version_info.major == 3, "the script requires Python 3"
 __author__ = "Juan Miguel Cejuela (@juanmirocks)"
 
 __help__ = """
-            A bit of a hack using the NCBI Global Alignment API to align two proteins (Needleman-Wunsch algorithm)
+            A bit of a hack that uses the NCBI Global Alignment API to align two proteins (Needleman-Wunsch algorithm)
             Also (optionally) parse out a column of the tabular output, e.g. column 2 == sequence identity percentage
+
+            Example call: ./ncbi_global_align.py P08100 P02699 2
 
             See: https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastp&BLAST_PROGRAMS=blastp&PAGE_TYPE=BlastSearch&BLAST_SPEC=GlobalAln&LINK_LOC=blasttab&LAST_PAGE=blastn&BLAST_INIT=GlobalAln
             Api doc: https://ncbi.github.io/blast-cloud/dev/api.html
@@ -66,9 +68,16 @@ def global_align(seq1, seq2, column=None):
 
 # ----------------------------------------------------------------------------
 
-assert len(sys.argv) in {3, 4}
-column = None if len(sys.argv) == 3 else int(sys.argv[3])
+try:
 
-ret = global_align(seq1=sys.argv[1], seq2=sys.argv[2], column=column)
+    assert len(sys.argv) in {3, 4}
+    column = None if len(sys.argv) == 3 else int(sys.argv[3])
 
-print(ret)
+    ret = global_align(seq1=sys.argv[1], seq2=sys.argv[2], column=column)
+
+    print(ret)
+
+except Exception:
+    print(__help__)
+    print()
+    raise
