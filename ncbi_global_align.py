@@ -59,7 +59,7 @@ def get(rid, column=None):
         return real_body.split("\t")[column]
 
 
-def apply(seq1, seq2, column=None):
+def global_align(seq1, seq2, column=None):
     rid = post(seq1, seq2)
     return get(rid, column)
 
@@ -69,6 +69,6 @@ def apply(seq1, seq2, column=None):
 assert len(sys.argv) in {3, 4}
 column = None if len(sys.argv) == 3 else int(sys.argv[3])
 
-ret = apply(seq1=sys.argv[1], seq2=sys.argv[2], column=column)
+ret = global_align(seq1=sys.argv[1], seq2=sys.argv[2], column=column)
 
 print(ret)
