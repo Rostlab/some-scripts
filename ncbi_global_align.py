@@ -68,16 +68,16 @@ def global_align(seq1, seq2, column=None):
 
 # ----------------------------------------------------------------------------
 
-try:
+if __name__ == "__main__":
+    try:
+        assert len(sys.argv) in {3, 4}
+        column = None if len(sys.argv) == 3 else int(sys.argv[3])
 
-    assert len(sys.argv) in {3, 4}
-    column = None if len(sys.argv) == 3 else int(sys.argv[3])
+        ret = global_align(seq1=sys.argv[1], seq2=sys.argv[2], column=column)
 
-    ret = global_align(seq1=sys.argv[1], seq2=sys.argv[2], column=column)
+        print(ret)
 
-    print(ret)
-
-except Exception:
-    print(__help__)
-    print()
-    raise
+    except Exception:
+        print(__help__)
+        print()
+        raise
